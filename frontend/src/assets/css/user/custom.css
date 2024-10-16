@@ -1,0 +1,14 @@
+.userAvtar .dropdown-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-5xl {
+  height: 8.5rem;
+  width: 8.5rem;
+}
+
+.radio-container input[type="radio"]:checked + label {
+  background-color: green;
+}
