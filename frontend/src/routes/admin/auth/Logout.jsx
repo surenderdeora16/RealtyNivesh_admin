@@ -16,14 +16,14 @@ const Logout = () => {
             if (data?.status === true) {
                 dispatch(logdedOutAdmin());
                 toast.success(data?.message);
-                return navigate(`/admin/login`);
+                return navigate(`/login`);
             } else {
                 toast.error(data?.message);
             }
         })()
     }, [])
 
-    return <Navigate to={`/admin/login`} replace />
+    return <Navigate to={`/login`} replace />
 }
 
 export default Logout

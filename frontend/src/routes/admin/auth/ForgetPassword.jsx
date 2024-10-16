@@ -13,7 +13,7 @@ const ForgetPassword = () => {
             <div className="container" data-layout="container">
                 <div className="row flex-center min-vh-100 py-6 text-center">
                     <div className="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                        <Link className="d-flex flex-center mb-4" to='/admin/dashboard'>
+                        <Link className="d-flex flex-center mb-4" to='/dashboard'>
                             <img className="me-2" src={logo} alt={application_name} style={{ width: 180, maxHeight: 45 }} />
                         </Link>
                         <div className="card">

@@ -23,7 +23,7 @@ const Enquiry = () => {
     const [activeTab, setActiveTab] = useState('1'); // Default active tab
 
     const getDataForTable = useCallback(async () => {
-        const { data } = await AxiosHelper.getData("/admin/contact-us-datatable", param);
+        const { data } = await AxiosHelper.getData("/contact-us-datatable", param);
         if (data?.status === true) {
             let { count, totalPages, record, pagination } = data?.data;
             setData({ count, totalPages, record, pagination });
@@ -72,7 +72,7 @@ const Enquiry = () => {
                                 </div>
                                 <div className="col-auto ms-auto">
                                     <div className="mt-2" role="tablist">
-                                        <Link to={`/admin/dashboard`} className="me-2 btn btn-sm btn-falcon-default">
+                                        <Link to={`/dashboard`} className="me-2 btn btn-sm btn-falcon-default">
                                             <i className="fa fa-home me-1"></i>
                                             <span className="d-none d-sm-inline-block ms-1">Dashboard</span>
                                         </Link>

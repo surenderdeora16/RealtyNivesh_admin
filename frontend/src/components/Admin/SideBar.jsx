@@ -3,6 +3,7 @@ import Divider from "./Sidebar/Divider";
 import SingleLink from "./Sidebar/SingleLink";
 import MultiLink from "./Sidebar/MultiLink";
 import { useSelector } from "react-redux";
+import adminLogo from  "../../assets/images/footerlogo.webp"
 
 const SideBar = ({ toggle, setToggle, setHover, menu, logoUrl = '' }) => {
 
@@ -21,7 +22,7 @@ const SideBar = ({ toggle, setToggle, setHover, menu, logoUrl = '' }) => {
                     </div>
                     <Link to={logoUrl} className="navbar-brand">
                         <div className="d-flex align-items-center py-3">
-                            <img className="me-2" src={logo} alt={application_name} style={{ maxWidth: 180, maxHeight: 45 }} />
+                            <img className="me-2" src={adminLogo} alt={application_name} style={{ maxWidth: 180, maxHeight: 45 }} />
                         </div>
                     </Link>
                 </div>

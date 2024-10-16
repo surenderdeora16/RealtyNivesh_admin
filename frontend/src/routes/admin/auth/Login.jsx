@@ -43,7 +43,7 @@ function Login() {
             <div className="container" data-layout="container">
                 <div className="row flex-center min-vh-100 py-6">
                     <div className="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                        <Link to='/admin/dashboard' className="d-flex flex-center mb-4">
+                        <Link to='/dashboard' className="d-flex flex-center mb-4">
                             <img className="me-2" src={logo} alt={application_name} style={{ width: 180, maxHeight: 45 }} />
                         </Link>
                         <div className="card">
@@ -70,7 +70,7 @@ function Login() {
                                     }}
                                 />
                                 <div className="col-auto">
-                                    <Link to={`/admin/forgot-password`} className="fs--1">
+                                    <Link to={`/forgot-password`} className="fs--1">
                                         Forgot Password?
                                     </Link>
                                 </div>

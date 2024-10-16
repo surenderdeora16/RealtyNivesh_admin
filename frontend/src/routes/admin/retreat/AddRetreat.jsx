@@ -214,7 +214,7 @@ const AddRetreat = () => {
                                 data = await AxiosHelper.postData("admin/retreat", values, true);
                                 if (data?.data?.status === true) {
                                     toast.success(data?.data?.message);
-                                    navigate('/admin/retreat')
+                                    navigate('/retreat')
                                 } else {
                                     setErrors(data?.data?.data)
                                     toast.error(data?.data?.message);

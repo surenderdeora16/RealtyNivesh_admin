@@ -28,7 +28,7 @@ const MultiLink = ({ name, icon, children }) => {
             style={{ display: show === true ? 'block' : 'none' }}
         >
             {children && children.map((link, i) => <li className="nav-item" key={i}>
-                <Link className={`nav-link ${pathname === link.url && 'active'}`} to={link.url} data-bs-toggle aria-expanded="false">
+                <Link className={`nav-link d-flex ${pathname === link.url && 'active'}`} to={link.url} data-bs-toggle aria-expanded="false">
                     <div className="d-flex align-items-center"><span className="nav-link-text ps-1">{link.name}</span>
                     </div>
                 </Link>

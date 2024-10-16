@@ -2,7 +2,7 @@ export default [
     {
         name: "Dashboard",
         icon: "fa-solid fa-gauge-high",
-        url: `/admin/dashboard`
+        url: `/dashboard`
     },
     // {
     //     name: "Retreats",
@@ -14,11 +14,11 @@ export default [
     //     icon: "fa-solid fa-bench-tree",
     //     url: `/admin/retreat`
     // },
-    {
-        name: "Enquiry",
-        icon: "fa-solid fa-address-card",
-        url: `/admin/enquiry`
-    },
+    // {
+    //     name: "Enquiry",
+    //     icon: "fa-solid fa-address-card",
+    //     url: `/enquiry`
+    // },
     // {
     //     name: "Users",
     //     icon: "fa-duotone fa-user-hair",
@@ -31,15 +31,15 @@ export default [
     // },
     {
         name: "Enquiries",
-        icon: "fa-solid fa-gear fa-spin",
+        icon: "fa-solid fa-address-card",
         children: [
             {
                 name: "Sushma Group",
-                url: `/admin/enquiry/sushmagroup`,
+                url: `/enquiry/sushmagroup`,
             },  
             {
                 name: "Sushma Elementa",
-                url: `/admin/enquiry/sushmaelementa`,
+                url: `/enquiry/sushmaelementa`,
             },
             // {
             //     name: "Social Links Setting",
@@ -54,15 +54,15 @@ export default [
         children: [
             {
                 name: "General Setting",
-                url: `/admin/general-settings/1`,
+                url: `/general-settings/1`,
             },
             {
                 name: "Email Setting",
-                url: `/admin/general-settings/2`,
+                url: `/general-settings/2`,
             },
             {
                 name: "Social Links Setting",
-                url: `/admin/general-settings/3`,
+                url: `/general-settings/3`,
             },
         ]
     },

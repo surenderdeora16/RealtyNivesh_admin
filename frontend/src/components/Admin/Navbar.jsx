@@ -51,8 +51,8 @@ const Navbar = ({ toggle, setToggle, dark, setDark }) => {
                             <span>{name}</span>
                         </span>
                         <NavDropdown.Divider className="my-1" />
-                        <NavLink className="dropdown-item" to={`/admin/profile`}>Profile &amp; account </NavLink>
-                        <NavLink className="dropdown-item" to={`/admin/logout`}>Logout</NavLink>
+                        <NavLink className="dropdown-item" to={`/profile`}>Profile &amp; account </NavLink>
+                        <NavLink className="dropdown-item" to={`/logout`}>Logout</NavLink>
                     </NavDropdown>
                 </li>
             </ul>

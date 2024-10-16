@@ -84,7 +84,7 @@ const GeneralSettings = () => {
                         </h5>
                     </div>
                     <div className="col-auto ms-auto">
-                        <Link to={`/admin/dashboard`} className="me-2 btn btn-falcon-default btn-sm">
+                        <Link to={`/dashboard`} className="me-2 btn btn-falcon-default btn-sm">
                             <i className="fa fa-home me-1"></i>
                             <span className="d-none d-sm-inline-block ms-1">Dashboard</span>
                         </Link>

@@ -39,7 +39,7 @@ const EditRetreat = () => {
                 setInitialValues(data?.data);
             } else {
                 toast.error(data?.message);
-                navigate('/admin/retreat');
+                navigate('/retreat');
             }
         } catch (error) {
             console.error("Error fetching retreat data:", error);
@@ -145,7 +145,7 @@ const EditRetreat = () => {
                                     const data = await AxiosHelper.putData(`admin/retreat?id=${values.id}`, values, true);
                                     if (data?.data?.status === true) {
                                         toast.success(data?.data?.message);
-                                        navigate('/admin/retreat');
+                                        navigate('/retreat');
                                     } else {
                                         setErrors(data?.data?.data);
                                         toast.error(data?.data?.message);
