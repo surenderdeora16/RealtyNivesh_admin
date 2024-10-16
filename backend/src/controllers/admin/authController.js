@@ -7,21 +7,8 @@ const { getCookiesConfig } = require("../../helpers/formValidConfig");
 exports.login = async (req, res) => {
     try {         
         const { mobile, password, device_token, device_id } = req.body;
-     
-        // let userch = await Admin.findOne({});
-        // console.log(userch)
-        // console.log('mobile',mobile.toString())
-        // console.log('userchmobile', userch.mobile)
-
-        // console.log('userch', userch.mobile == mobile ) 
-
-
-
-
-
-
+ 
         let user = await Admin.findOne({ mobile: mobile, deletedAt: null });
-        console.log('user', user)
         if (user && user.checkPassword(password)) {
             if (!user.status) 
                 return res.json({

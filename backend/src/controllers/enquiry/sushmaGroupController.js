@@ -40,8 +40,13 @@ exports.SushmaGroupEnquiry = async (req, res) => {
                 const enquiry = await SushmaGroupEnquiry.findOneAndUpdate(
                     { mobile },
                     { otpStatus: 'otp verified' },
-                    { new: true }
+                    {
+                        sort: { createdAt: -1 },
+                        new: true
+                    }
                 );
+
+                console.log('enquiryxcheckOTP', enquiry)
                 // await sendEmail(data);
                 return res.successUpdate(enquiry);
             } else {
@@ -49,18 +54,25 @@ exports.SushmaGroupEnquiry = async (req, res) => {
             }
 
         } else if (action === 'resendOTP') {
+            console.log("OKKKKKKKKKkk")
             try {
                 const enquiry = await SushmaGroupEnquiry.findOne({ mobile: data.mobile });
                 if (!enquiry) return res.noRecords('Record not found');
-                const otpGenerated = await generateOTP(enquiry.mobile);
-                if (otpGenerated) {
-                    return res.success({ message: 'OTP resent successfully' });
+                console.log('enquiryResend', enquiry)
+
+                if (enquiry?.otpStatus !== 'otp verified') {
+                    const otpGenerated = await generateOTP(enquiry.mobile);
+                    if (otpGenerated) {
+                        return res.success({ message: 'OTP resent successfully' });
+                    } else {
+                        return res.someThingWentWrong('Failed to resend OTP');
+                    }
                 } else {
-                    return res.someThingWentWrong('Failed to resend OTP');
+                    return res.badRequest('OTP has already been verified for this number.');
                 }
             }
             catch (error) {
-                console.log("ERROR",error)
+                console.log("ERROR", error)
             }
         } else {
             return res.badRequest('Invalid action');

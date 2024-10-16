@@ -1,4 +1,4 @@
-const { SushmaElementaEnquiry } = require("../../models");
+const {SushmaGroupEnquiry, SushmaElementaEnquiry } = require("../../models");
 
 exports.EnquiryList = async (req, res) => {
     try {
@@ -17,21 +17,21 @@ exports.EnquiryList = async (req, res) => {
                 { name: new RegExp(query, 'i') },
                 { mobile: new RegExp(query, 'i') },
                 { email: new RegExp(query, 'i') },
-                { city: new RegExp(query, 'i') },
+                { projectName: new RegExp(query, 'i') },
                 { message: new RegExp(query, 'i') },
                 { event: new RegExp(query, 'i') },
                 { otpStatus: new RegExp(query, 'i') },
             ];
         }
 
-        var results = await SushmaElementaEnquiry
+        var results = await SushmaGroupEnquiry
             .find(search)
-            .select('type name mobile email city message siteVisitDate projectName event otpStatus createdAt')
+            .select('type name mobile email message siteVisitDate projectName event otpStatus createdAt')
             .limit(limit)
             .skip((pageNo - 1) * limit)
             .sort({ [orderBy]: orderDirection })
 
-        const total_count = await SushmaElementaEnquiry.countDocuments(search);
+        const total_count = await SushmaGroupEnquiry.countDocuments(search);
         if (results.length > 0) {
             return res.pagination(results, total_count, limit, pageNo);
         } else {

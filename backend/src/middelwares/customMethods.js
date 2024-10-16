@@ -91,7 +91,7 @@ module.exports = (req, res, next) => {
     res.badRequest = function (error = { message: language.BAD_REQUEST }) {
         return this.status(400).json({
             status: false,
-            message: error.message ?? language.BAD_REQUEST,
+            message: error.message || language.BAD_REQUEST,
             data: process.env.SHOW_ERROR ? error.stack.split("\n").splice(0, 10) : []
         })
     };

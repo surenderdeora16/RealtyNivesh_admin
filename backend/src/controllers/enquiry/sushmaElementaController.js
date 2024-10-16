@@ -28,9 +28,12 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             const { valid, message } = await verifyOTP(mobile, otp);
             if (valid) {
                 const enquiry = await SushmaElementaEnquiry.findOneAndUpdate(
-                    { mobile },
+                    { mobile }, 
                     { otpStatus: 'otp verified' },
-                    { new: true }
+                    { 
+                        sort: { createdAt: -1 }, 
+                        new: true 
+                    }
                 );
                 await sendEmail(data);
                 return res.successUpdate(enquiry);

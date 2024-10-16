@@ -11,7 +11,7 @@ const paymentController = require('./src/controllers/paymentController');
 // create new express app and save it as "app"
 const app = express();
 app.use(cors({
-    origin: process.env.CLIENT_BASEURL,
+    origin: ["http://localhost:3000", "http://localhost:4000"],
     credentials: true
 }));
 // parse requests of content-type - application/json
