@@ -9,7 +9,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
             const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data);
+            // await sendEmail(data);
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -22,10 +22,14 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             }
 
         } else if (action === 'verifyOTP') {
+            console.log("verfu ot commig...")
             const otpRecord = await Otp.findOne({ mobile });
-            if (!otpRecord) return res.noRecords('No OTP record found');
+            console.log("otpRecord", otpRecord)
+            if (!otpRecord || otpRecord === null) return res.noRecords(false);
 
             const { valid, message } = await verifyOTP(mobile, otp);
+            console.log('message', message)
+            console.log('valid', valid)
             if (valid) {
                 const enquiry = await SushmaElementaEnquiry.findOneAndUpdate(
                     { mobile }, 
@@ -35,7 +39,8 @@ exports.SushmaElementaEnquiry = async (req, res) => {
                         new: true 
                     }
                 );
-                await sendEmail(data);
+                console.log('enquiryCheckL', enquiry)
+                // await sendEmail(data);
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);

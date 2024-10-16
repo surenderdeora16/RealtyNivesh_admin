@@ -31,7 +31,7 @@ exports.SushmaGroupEnquiry = async (req, res) => {
             }
         } else if (action === 'verifyOTP') {
             const otpRecord = await Otp.findOne({ mobile });
-            if (!otpRecord) return res.noRecords(false);
+            if (!otpRecord || otpRecord === null) return res.noRecords(false);
 
             const { valid, message } = await verifyOTP(mobile, otp);
             console.log('message', message)
