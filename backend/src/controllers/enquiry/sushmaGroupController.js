@@ -9,7 +9,7 @@ exports.SushmaGroupEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'message', 'siteVisitDate', 'projectName']);
         if (action === 'getintouch') {
             const result = await SushmaGroupEnquiry.create({ ...data, otpStatus: 'not required' });
-            // await sendEmail(data);
+            await sendEmail(data);
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -41,7 +41,7 @@ exports.SushmaGroupEnquiry = async (req, res) => {
                         new: true
                     }
                 );
-                // await sendEmail(data);
+                await sendEmail(data);
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);

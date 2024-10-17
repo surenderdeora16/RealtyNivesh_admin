@@ -2,11 +2,11 @@ const nodemailer = require("nodemailer");
 
 const sendEmail = async (data) => {
     var transporter = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
+        host: "smtp.gmail.com",
+        port: 587,
         auth: {
-            user: "6f6a47019a7afc",
-            pass: "808f9815b8eef0"
+            user: "surender82905@gmail.com",
+            pass: "oczbbjpmhfknmmnh"
         }
     });
 
@@ -96,8 +96,8 @@ const sendEmail = async (data) => {
 `;
 
     const mailOptions = {
-        from: data.email,
-        to: process.env.EMAIL_USER,
+        from: 'surender82905@gmail.com',
+        to: "surender4268@gmail.com",
         subject: `New Form Entry for ${data?.event}`,
         html: emailContent,
     };
