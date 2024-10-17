@@ -10,7 +10,8 @@ import { ENQUERY_FORM_TYPES } from '../../../constant/fromConfig';
 const Enquiry = () => {
     const [data, setData] = useState({ count: 0, record: [], totalPages: 0, pagination: [] });
     const [showView, setShowView] = useState(false);
-    const [param, setParam] = useState({ limit: 10, pageNo: 1, query: "", orderBy: 'createdAt', orderDirection: -1 });
+    const [activeTab, setActiveTab] = useState('1'); // Default active tab
+    const [param, setParam] = useState({ limit: 10, pageNo: 1, query: "", orderBy: 'createdAt', orderDirection: -1, activeTab: activeTab });
     const [initialValues, setInitialValues] = useState({
         name: '',
         mobile: '',
@@ -20,7 +21,6 @@ const Enquiry = () => {
         otpStatus: '',
         createdAt: '',
     });
-    const [activeTab, setActiveTab] = useState('1'); // Default active tab
 
     const getDataForTable = useCallback(async () => {
         const { data } = await AxiosHelper.getData("/admin/sushmaelementa-enquiry-datatable", param);
@@ -59,7 +59,7 @@ const Enquiry = () => {
         },
     ];
 
-    const filteredRecords = data.record.filter(record => record.type === parseInt(activeTab));
+    const filteredRecords = data.record.filter(record => record);
 
     return (
         <div>
@@ -100,7 +100,7 @@ const Enquiry = () => {
                                 </div>
                             </div>
 
-                            <Tabs activeKey={activeTab} fill onSelect={(k) => setActiveTab(k)} className="mb-3">
+                            <Tabs activeKey={activeTab} fill onSelect={(k) => {setActiveTab(k); setParam({ ...param, activeTab: k })}} className="mb-3">
                                 {ENQUERY_FORM_TYPES.map((row, i) => (
                                     <Tab eventKey={row.value} title={row.label} key={i}>
                                         <TableContent records={filteredRecords} handelSort={handelSort} dropList={dropList} viewData={viewData} param={param} />

@@ -51,7 +51,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             if (!enquiry) return res.noRecords('Record not found');
 
             const otpGenerated = await generateOTP(enquiry.mobile);
-
+            console.log(otpGenerated, "test 34")
             if (otpGenerated) {
                 return res.success({ message: 'OTP resent successfully' });
             } else {

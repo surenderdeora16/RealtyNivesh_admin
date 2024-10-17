@@ -3,7 +3,7 @@ const {SushmaGroupEnquiry, SushmaElementaEnquiry } = require("../../models");
 exports.EnquiryList = async (req, res) => {
     try {
 
-        var { limit, pageNo, query, orderBy, orderDirection } = req.query
+        var { limit, pageNo, query, orderBy, orderDirection, activeTab } = req.query
 
         limit = limit ? parseInt(limit) : 10;
         pageNo = pageNo ? parseInt(pageNo) : 1;
@@ -12,6 +12,11 @@ exports.EnquiryList = async (req, res) => {
         orderDirection = orderDirection ? parseInt(orderDirection) : -1;
 
         var search = { deletedAt: null }
+
+        if (activeTab) {
+            search.type = parseInt(activeTab);
+        }
+
         if (query) {
             search.$or = [
                 { name: new RegExp(query, 'i') },
