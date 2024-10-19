@@ -6,3 +6,4 @@ public/export
 # Optional npm cache directory
 .npm
 
+.env

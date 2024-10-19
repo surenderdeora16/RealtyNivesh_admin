@@ -13,7 +13,7 @@ const CheckError = (res) => {
         toast.error('Token Expired, Please login Again.')
         localStorage.removeItem('type');
         localStorage.removeItem('isLogedIn');
-        window.location.href = '/user/login';
+        // window.location.href = '/user/login';
     }
 }
 

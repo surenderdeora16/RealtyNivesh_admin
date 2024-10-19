@@ -33,7 +33,6 @@ router.use('/user/', require('./user/index.routes'));
 router.use('/admin/', require('./admin/index.routes'));
 
 
-
 // Application Error handler 
 router.use(errorHandler);
 

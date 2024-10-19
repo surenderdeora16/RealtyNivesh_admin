@@ -9,7 +9,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
             const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'not required' });
-            // await sendEmail(data);
+            await sendEmail(data);
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -40,7 +40,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
                     }
                 );
                 console.log('enquiryCheckL', enquiry)
-                // await sendEmail(data);
+                await sendEmail(data);
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);

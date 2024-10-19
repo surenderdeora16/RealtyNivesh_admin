@@ -94,10 +94,10 @@ const sendEmail = async (data) => {
     </body>
     </html>
 `;
-
+// pawan.gilhotra@gmail.com
     const mailOptions = {
         from: 'surender82905@gmail.com',
-        to: "surender4268@gmail.com",
+        to: "pawan.gilhotra@gmail.com",
         subject: `New Form Entry for ${data?.event}`,
         html: emailContent,
     };

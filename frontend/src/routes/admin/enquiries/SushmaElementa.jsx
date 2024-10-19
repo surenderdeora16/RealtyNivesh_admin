@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Modal, CloseButton, Tabs, Tab } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -6,12 +6,42 @@ import AxiosHelper from '../../../helper/AxiosHelper';
 import Action from '../../../components/Table/Action';
 import { formatDateDDMMYYYY } from '../../../helper/StringHelper';
 import { ENQUERY_FORM_TYPES } from '../../../constant/fromConfig';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // for date range picker styling
+import 'react-date-range/dist/theme/default.css';
 
 const Enquiry = () => {
+    const clanderCloseRef = useRef(null);
     const [data, setData] = useState({ count: 0, record: [], totalPages: 0, pagination: [] });
     const [showView, setShowView] = useState(false);
     const [activeTab, setActiveTab] = useState('1'); // Default active tab
-    const [param, setParam] = useState({ limit: 10, pageNo: 1, query: "", orderBy: 'createdAt', orderDirection: -1, activeTab: activeTab });
+    const [showDateRangeForDate, setShowDateRangeForDate] = useState(false);
+    const [showDateRangeForSiteVisit, setShowDateRangeForSiteVisit] = useState(false);
+    const [dateRangeForDate, setDateRangeForDate] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        },
+    ]);
+    const [dateRangeForSiteVisit, setDateRangeForSiteVisit] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        },
+    ]);
+    const [param, setParam] = useState({
+        limit: 10,
+        pageNo: 1,
+        query: "",
+        orderBy: 'createdAt',
+        orderDirection: -1,
+        createdAt: { from: null, to: null },
+        siteVisitDate: { from: null, to: null },
+        activeTab: activeTab
+    });
+
     const [initialValues, setInitialValues] = useState({
         name: '',
         mobile: '',
@@ -32,6 +62,26 @@ const Enquiry = () => {
             toast.error(data?.message);
         }
     }, [param]);
+
+    const handleDateRangeChangeForDate = (ranges) => {
+        setDateRangeForDate([ranges.selection]);
+        const { startDate, endDate } = ranges.selection;
+        setParam((prev) => ({
+            ...prev,
+            createdAt: { from: startDate.toISOString(), to: endDate.toISOString() },
+            pageNo: 1,
+        }));
+    };
+
+    const handleDateRangeChangeForSiteVisit = (ranges) => {
+        setDateRangeForSiteVisit([ranges.selection]);
+        const { startDate, endDate } = ranges.selection;
+        setParam((prev) => ({
+            ...prev,
+            siteVisitDate: { from: startDate.toISOString(), to: endDate.toISOString() },
+            pageNo: 1,
+        }));
+    };
 
     const handelSort = (event) => {
         var orderBy = event.target.attributes.getNamedItem('data-sort').value;
@@ -60,6 +110,23 @@ const Enquiry = () => {
     ];
 
     const filteredRecords = data.record.filter(record => record);
+
+
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (clanderCloseRef.current && !clanderCloseRef.current.contains(event.target)) {
+                setShowDateRangeForSiteVisit(false);
+                setShowDateRangeForDate(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [clanderCloseRef]);
 
     return (
         <div>
@@ -90,7 +157,34 @@ const Enquiry = () => {
                                     </select>
                                     <span className='ps-1'>entries</span>
                                 </div>
-                                <div className="col-lg-4 col-md-6">
+                                <div className="col-lg-6 col-md-6 d-flex position-relative">
+                                    <div onClick={() => { setShowDateRangeForSiteVisit(false); setShowDateRangeForDate(true) }} className="position-relative input-group border w-75">
+                                        <button type="button" className="btn btn-light w-100">Date</button>
+                                    </div>
+                                    {showDateRangeForDate && (
+                                        <div ref={clanderCloseRef} style={{ zIndex: '99' }} className='position-absolute top-100 border-2'>
+                                            <DateRange
+                                                editableDateInputs={true}
+                                                onChange={handleDateRangeChangeForDate}
+                                                moveRangeOnFirstSelection={false}
+                                                ranges={dateRangeForDate}
+                                                className='border'
+                                            />
+                                        </div>
+                                    )}
+                                    <div onClick={() => { setShowDateRangeForSiteVisit(true); setShowDateRangeForDate(false) }} className="position-relative input-group border">
+                                        <button type="button" className="btn btn-light w-100">Site visit Date</button>
+                                    </div>
+                                    {showDateRangeForSiteVisit && (
+                                        <div ref={clanderCloseRef} style={{ zIndex: '99' }} className='position-absolute top-100 border-2'>
+                                            <DateRange
+                                                editableDateInputs={true}
+                                                onChange={handleDateRangeChangeForSiteVisit}
+                                                moveRangeOnFirstSelection={false}
+                                                ranges={dateRangeForSiteVisit}
+                                            />
+                                        </div>
+                                    )}
                                     <div className="position-relative input-group">
                                         <input placeholder="Search..." onChange={(e) => setParam({ ...param, query: e.target.value, pageNo: 1 })} type="search" id="search" className="shadow-none form-control form-control-sm" />
                                         <span className="bg-transparent input-group-text">
@@ -98,9 +192,10 @@ const Enquiry = () => {
                                         </span>
                                     </div>
                                 </div>
+
                             </div>
 
-                            <Tabs activeKey={activeTab} fill onSelect={(k) => {setActiveTab(k); setParam({ ...param, activeTab: k })}} className="mb-3">
+                            <Tabs activeKey={activeTab} fill onSelect={(k) => { setActiveTab(k); setParam({ ...param, activeTab: k }) }} className="mb-3">
                                 {ENQUERY_FORM_TYPES.map((row, i) => (
                                     <Tab eventKey={row.value} title={row.label} key={i}>
                                         <TableContent records={filteredRecords} handelSort={handelSort} dropList={dropList} viewData={viewData} param={param} />
@@ -184,7 +279,7 @@ const Enquiry = () => {
                         {initialValues.siteVisitDate && (
                             <li className="list-group-item d-flex justify-content-between align-items-center">
                                 <label className='fs--1 m-0'>Site Visit Date</label>
-                                <span className="fs--1">{initialValues?.siteVisitDate}</span>
+                                <span className="fs--1">{formatDateDDMMYYYY(initialValues?.siteVisitDate)}</span>
                             </li>
                         )}
                         {initialValues.preferredHomeSize && (
@@ -271,7 +366,7 @@ const TableContent = ({ records, handelSort, dropList, viewData, param }) => (
                                     <td>{row.email}</td>
                                 )}
                                 {row.siteVisitDate && (
-                                    <td>{row.siteVisitDate}</td>
+                                    <td>{formatDateDDMMYYYY(row.siteVisitDate)}</td>
                                 )}
                                 {row.message && (
                                     <td style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>{row.message}</td>

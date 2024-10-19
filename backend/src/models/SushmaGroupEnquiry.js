@@ -9,9 +9,10 @@ const enquirySchema = new mongoose.Schema({
     action: { type: String, required: false },
     message: { type: String },
     projectName: { type: String },
-    siteVisitDate: { type: String },
+    siteVisitDate: { type: Date, default: null },
     event: { type: String, required: true }, 
     otpStatus: { type: String, default: 'OTP Not Verified' },
+    googleSheetStatus: {type:Boolean, default: false},
     createdAt: { type: Date, default: Date.now },
 });
 

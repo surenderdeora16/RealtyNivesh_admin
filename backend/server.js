@@ -7,11 +7,16 @@ const fs = require('fs');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const paymentController = require('./src/controllers/paymentController');
-
+const { processWebsites } = require('./src/services/enquiryService');
 // create new express app and save it as "app"
 const app = express();
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:4000"],
+    origin: [
+        "http://localhost:3000",
+        "http://localhost:4000",
+        "https://admin.realtynivesh.com",
+        "https://sushmagroup.realtynivesh.com",
+    ],
     credentials: true
 }));
 // parse requests of content-type - application/json
@@ -29,6 +34,17 @@ app.all("/uploads/*", (req, res) => res.sendFile(path.resolve(__dirname, './publ
 
 // routes
 app.get("/", async (req, res) => res.json({ status: true, message: "Api Working fine..!!" }));
+app.get('/savedata-to-googlesheet', async (req, res) => {
+    try {
+
+        await processWebsites();
+        res.status(200).json({ message: 'Data processed and sent to Google Sheets successfully.' });
+    } catch (error) {
+        console.error('Error processing websites:', error);
+        res.status(500).json({ message: 'Error processing data.' });
+    }
+});
+
 app.post('/payment-success', paymentController.handleSuccess);
 app.post('/payment-error', paymentController.handleError);
 app.use('/api-v1', require('./src/routes/index.routes'));
