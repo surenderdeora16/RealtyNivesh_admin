@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (data) => {
+const sendEmail = async (data, WebsiteName) => {
     var transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -16,7 +16,7 @@ const sendEmail = async (data) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sushma Elementa Enquiry</title>
+        <title>${WebsiteName} Enquiry</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -73,7 +73,7 @@ const sendEmail = async (data) => {
     </head>
     <body>
         <div class="container">
-            <h1>New Lead For Sushma Elementa</h1>
+            <h1>New Lead For ${WebsiteName}</h1>
             ${data?.name ? `<p><span class="label">Name:</span> ${data.name}</p>` : ''}
             ${data?.mobile ? `<p><span class="label">Contact:</span> ${data.mobile}</p>` : ''}
             ${data?.email ? `<p><span class="label">Email:</span> ${data.email}</p>` : ''}
@@ -88,7 +88,7 @@ const sendEmail = async (data) => {
                     </div>
                 ` : ''}
             <div class="footer">
-                <p>&copy; ${new Date().getFullYear()} Your Sushma Elementa</p>
+                <p>&copy; ${new Date().getFullYear()} ${WebsiteName}</p>
             </div>
         </div>
     </body>

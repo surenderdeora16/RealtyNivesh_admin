@@ -1,19 +1,19 @@
-const { SushmaElementaEnquiry } = require('../../models');
+const { MedallionEnquiry } = require('../../models');
 const sendEmail = require('../../helpers/email');
 const { generateOTP, verifyOTP } = require('../../helpers/sendSms'); // Services updated for better structure
 const Otp = require('../../models/Otp');
 
-exports.SushmaElementaEnquiry = async (req, res) => {
+exports.MedallionEnquiry = async (req, res) => {
     try {
         const { action, mobile, otp } = req.body;
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
-            const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data, 'Sushma Elementa');
+            const result = await MedallionEnquiry.create({ ...data, otpStatus: 'not required' });
+            await sendEmail(data, 'Medallion');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
-            const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'otp not verified' });
+            const result = await MedallionEnquiry.create({ ...data, otpStatus: 'otp not verified' });
             const otpGenerated = await generateOTP(result.mobile);
             if (otpGenerated) {
                 return res.successInsert({ result, message: 'OTP sent to mobile' });
@@ -31,7 +31,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             console.log('message', message)
             console.log('valid', valid)
             if (valid) {
-                const enquiry = await SushmaElementaEnquiry.findOneAndUpdate(
+                const enquiry = await MedallionEnquiry.findOneAndUpdate(
                     { mobile }, 
                     { otpStatus: 'otp verified' },
                     { 
@@ -40,14 +40,14 @@ exports.SushmaElementaEnquiry = async (req, res) => {
                     }
                 );
                 console.log('enquiryCheckL', enquiry)
-                await sendEmail(data, 'Sushma Elementa');
+                await sendEmail(data, 'Medallion');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);
             }
 
         } else if (action === 'resendOTP') {
-            const enquiry = await SushmaElementaEnquiry.findOne({ mobile: data.mobile });
+            const enquiry = await MedallionEnquiry.findOne({ mobile: data.mobile });
             if (!enquiry) return res.noRecords('Record not found');
 
             const otpGenerated = await generateOTP(enquiry.mobile);

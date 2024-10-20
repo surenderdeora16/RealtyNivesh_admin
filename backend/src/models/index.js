@@ -29,8 +29,8 @@ const Booking = require('./Booking')
 const OnlineProgramPrice = require('./OnlineProgramPrice')
 const SushmaElementaEnquiry = require('./SushmaElementaEnquiry')
 const SushmaGroupEnquiry = require('./SushmaGroupEnquiry')
+const MedallionEnquiry = require('./MedallionEnquiry')
 
 
 
-
-module.exports = {SushmaGroupEnquiry, SushmaElementaEnquiry, User, Admin, UserOTP, GeneralSetting, ContactUs, DiscountCoupon, Retreat, Booking, OnlineProgramPrice, mongoose, connection, createFromHexString, db };
+module.exports = {MedallionEnquiry, SushmaGroupEnquiry, SushmaElementaEnquiry, User, Admin, UserOTP, GeneralSetting, ContactUs, DiscountCoupon, Retreat, Booking, OnlineProgramPrice, mongoose, connection, createFromHexString, db };
