@@ -3,7 +3,6 @@ const axios = require("axios");
 const Otp = require("../models/Otp");
 
 const generateOTP = async (mobile) => {
-    console.log("PLEASWEW  IIINN")
     try {
         const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
         const apiKey = process.env.TEXTLOCALKEY;
@@ -18,7 +17,7 @@ const generateOTP = async (mobile) => {
             { upsert: true, new: true }
         );
         const { data } = await axios.get(url);
-        if (data && data.status == 'success') {
+        if (data && data?.status == 'success') {
             return true;
         } else {
             throw false
@@ -30,7 +29,6 @@ const generateOTP = async (mobile) => {
 };
 
 const verifyOTP = async (mobile, otpCode) => {
-    console.log('PLSEAE GO')
     try {
         const otpRecord = await Otp.findOne({ mobile: mobile });
 

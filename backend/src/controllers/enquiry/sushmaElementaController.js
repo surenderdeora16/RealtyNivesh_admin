@@ -9,7 +9,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
             const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data);
+            await sendEmail(data, 'Sushma Elementa');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -22,25 +22,20 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             }
 
         } else if (action === 'verifyOTP') {
-            console.log("verfu ot commig...")
             const otpRecord = await Otp.findOne({ mobile });
-            console.log("otpRecord", otpRecord)
             if (!otpRecord || otpRecord === null) return res.noRecords(false);
 
             const { valid, message } = await verifyOTP(mobile, otp);
-            console.log('message', message)
-            console.log('valid', valid)
             if (valid) {
                 const enquiry = await SushmaElementaEnquiry.findOneAndUpdate(
-                    { mobile }, 
+                    { mobile },
                     { otpStatus: 'otp verified' },
-                    { 
-                        sort: { createdAt: -1 }, 
-                        new: true 
+                    {
+                        sort: { createdAt: -1 },
+                        new: true
                     }
                 );
-                console.log('enquiryCheckL', enquiry)
-                await sendEmail(data);
+                await sendEmail(data, 'Sushma Elementa');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);
@@ -51,9 +46,12 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             if (!enquiry) return res.noRecords('Record not found');
 
             const otpGenerated = await generateOTP(enquiry.mobile);
-            console.log(otpGenerated, "test 34")
+            
             if (otpGenerated) {
-                return res.success({ message: 'OTP resent successfully' });
+                return res.status(200).json({
+                    status: true,
+                    message: 'New OTP sent to your mobile no.'
+                });
             } else {
                 return res.someThingWentWrong('Failed to resend OTP');
             }

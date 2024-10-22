@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (data) => {
+const sendEmail = async (data, WebsiteName) => {
     var transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -16,7 +16,7 @@ const sendEmail = async (data) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sushma Elementa Enquiry</title>
+        <title>${WebsiteName} Enquiry</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -73,22 +73,23 @@ const sendEmail = async (data) => {
     </head>
     <body>
         <div class="container">
-            <h1>New Lead For Sushma Elementa</h1>
+            <h1>New Lead For ${WebsiteName}</h1>
             ${data?.name ? `<p><span class="label">Name:</span> ${data.name}</p>` : ''}
-            ${data?.mobile ? `<p><span class="label">Contact:</span> ${data.mobile}</p>` : ''}
+            ${data?.mobile ? `<p><span class="label">Mobile:</span> ${data.mobile}</p>` : ''}
             ${data?.email ? `<p><span class="label">Email:</span> ${data.email}</p>` : ''}
             ${data?.city ? `<p><span class="label">City:</span> ${data.city}</p>` : ''}
-            ${data?.message || data?.siteVisitDate || data?.preferredHomeSize || data?.broker || data?.howHeardAboutUs ? `
+            ${data?.message || data?.projectName || data?.siteVisitDate || data?.preferredHomeSize || data?.broker || data?.howHeardAboutUs ? `
                     <div class="highlight">
-                        ${data?.message ? `<p><span class="label">Message:</span> ${data.message}</p>` : ''}
-                        ${data?.siteVisitDate ? `<p><span class="label">Site Visit Date:</span> ${data.siteVisitDate}</p>` : ''}
-                        ${data?.preferredHomeSize ? `<p><span class="label">Preferred Home Size:</span> ${data.preferredHomeSize}</p>` : ''}
-                        ${data?.broker ? `<p><span class="label">Broker:</span> ${data.broker}</p>` : ''}
-                        ${data?.howHeardAboutUs ? `<p><span class="label">How Heard About Us:</span> ${data.howHeardAboutUs}</p>` : ''}
+                    ${data?.projectName ? `<p><span class="label">Site Name:</span> ${data.projectName}</p>` : ''}
+                    ${data?.siteVisitDate ? `<p><span class="label">Site Visit Date:</span> ${data.siteVisitDate}</p>` : ''}
+                    ${data?.preferredHomeSize ? `<p><span class="label">Preferred Home Size:</span> ${data.preferredHomeSize}</p>` : ''}
+                    ${data?.broker ? `<p><span class="label">Broker:</span> ${data.broker}</p>` : ''}
+                    ${data?.howHeardAboutUs ? `<p><span class="label">How Heard About Us:</span> ${data.howHeardAboutUs}</p>` : ''}
+                    ${data?.message ? `<p><span class="label">Message:</span> ${data.message}</p>` : ''}
                     </div>
                 ` : ''}
             <div class="footer">
-                <p>&copy; ${new Date().getFullYear()} Your Sushma Elementa</p>
+                <p>&copy; ${new Date().getFullYear()} ${WebsiteName}</p>
             </div>
         </div>
     </body>
@@ -97,7 +98,7 @@ const sendEmail = async (data) => {
 // pawan.gilhotra@gmail.com
     const mailOptions = {
         from: 'surender82905@gmail.com',
-        to: "pawan.gilhotra@gmail.com",
+        to: "surender4268@gmail.com",
         subject: `New Form Entry for ${data?.event}`,
         html: emailContent,
     };

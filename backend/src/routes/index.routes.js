@@ -2,8 +2,10 @@ const { licenseCheck, errorHandler, customMethods, showValidationErrors } = requ
 const checkValid = require('../middelwares/validator');
 const generalSettingsController = require('../controllers/admin/generalSettingsController');
 const frontController = require('../controllers/frontController');
-const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaController');
 const SushmaGroupEnquiry = require('../controllers/enquiry/sushmaGroupController');
+const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaController');
+const MedallionController = require('../controllers/enquiry/medallionController');
+const RealtyNiveshController = require('../controllers/enquiry/realtyniveshController');
 const express = require('express')
 const router = express.Router();
 
@@ -21,8 +23,11 @@ router.use(licenseCheck);
 router.get('/settings/:type', generalSettingsController.getGeneralSetting);
 
 router.post('/contact-us', checkValid('ContactUs'), showValidationErrors, frontController.createContactUs)
-router.post('/sushmaelementa-enquiry', showValidationErrors, SushmaElementaEnquiry.SushmaElementaEnquiry)
+
+router.post('/realtynivesh-enquiry', showValidationErrors, RealtyNiveshController.RealtyNiveshEnquiry)
 router.post('/sushmagroup-enquiry', showValidationErrors, SushmaGroupEnquiry.SushmaGroupEnquiry)
+router.post('/sushmaelementa-enquiry', showValidationErrors, SushmaElementaEnquiry.SushmaElementaEnquiry)
+router.post('/medallion-enquiry', showValidationErrors, MedallionController.MedallionEnquiry)
 
 
 router.get('/retreat-datatable/:slug?', frontController.retreatList);

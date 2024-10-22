@@ -15,7 +15,9 @@ app.use(cors({
         "http://localhost:3000",
         "http://localhost:4000",
         "https://admin.realtynivesh.com",
+        "https://realtynivesh.com",
         "https://sushmagroup.realtynivesh.com",
+        "https://themedallion.realtynivesh.com"
     ],
     credentials: true
 }));
