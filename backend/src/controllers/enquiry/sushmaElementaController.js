@@ -35,6 +35,10 @@ exports.SushmaElementaEnquiry = async (req, res) => {
                         new: true
                     }
                 );
+<<<<<<< HEAD
+=======
+                console.log('enquiryCheckL', enquiry)
+>>>>>>> 1e3a85bb4cb58bb4affed2c18e8ab28d609ea0d8
                 await sendEmail(data, 'Sushma Elementa');
                 return res.successUpdate(enquiry);
             } else {
