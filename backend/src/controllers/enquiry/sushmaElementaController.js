@@ -1,7 +1,14 @@
 const { SushmaElementaEnquiry } = require('../../models');
 const sendEmail = require('../../helpers/email');
-const { generateOTP, verifyOTP } = require('../../helpers/sendSms'); // Services updated for better structure
+const { generateOTP, verifyOTP } = require('../../helpers/sendSms'); 
 const Otp = require('../../models/Otp');
+
+async function getOtpStatusVerifiedAndNotRequiredCount() {
+    const counts = await SushmaElementaEnquiry.countDocuments({
+        otpStatus: { $in: ['otp verified', 'not required'] }
+    });
+    return counts;
+}
 
 exports.SushmaElementaEnquiry = async (req, res) => {
     try {
@@ -9,7 +16,8 @@ exports.SushmaElementaEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
             const result = await SushmaElementaEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data, 'Sushma Elementa');
+            const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+            await sendEmail(data, Emailcount, 'Sushma Elementa');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -35,11 +43,8 @@ exports.SushmaElementaEnquiry = async (req, res) => {
                         new: true
                     }
                 );
-<<<<<<< HEAD
-=======
-                console.log('enquiryCheckL', enquiry)
->>>>>>> 1e3a85bb4cb58bb4affed2c18e8ab28d609ea0d8
-                await sendEmail(data, 'Sushma Elementa');
+                const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+                await sendEmail(data, Emailcount, 'Sushma Elementa');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);
@@ -50,7 +55,7 @@ exports.SushmaElementaEnquiry = async (req, res) => {
             if (!enquiry) return res.noRecords('Record not found');
 
             const otpGenerated = await generateOTP(enquiry.mobile);
-            
+
             if (otpGenerated) {
                 return res.status(200).json({
                     status: true,

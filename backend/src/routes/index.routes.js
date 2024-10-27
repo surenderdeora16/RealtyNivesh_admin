@@ -4,12 +4,8 @@ const generalSettingsController = require('../controllers/admin/generalSettingsC
 const frontController = require('../controllers/frontController');
 const SushmaGroupEnquiry = require('../controllers/enquiry/sushmaGroupController');
 const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaController');
-<<<<<<< HEAD
 const MedallionController = require('../controllers/enquiry/medallionController');
 const RealtyNiveshController = require('../controllers/enquiry/realtyniveshController');
-=======
-const MedallionController = require('../controllers/enquiry/MedallionController');
->>>>>>> 1e3a85bb4cb58bb4affed2c18e8ab28d609ea0d8
 const express = require('express')
 const router = express.Router();
 

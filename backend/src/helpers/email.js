@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (data, WebsiteName) => {
+const sendEmail = async (data, Emailcount, WebsiteName) => {
     var transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -95,11 +95,11 @@ const sendEmail = async (data, WebsiteName) => {
     </body>
     </html>
 `;
-// pawan.gilhotra@gmail.com
+    // pawan.gilhotra@gmail.com
     const mailOptions = {
         from: 'surender82905@gmail.com',
-        to: "surender4268@gmail.com",
-        subject: `New Form Entry for ${data?.event}`,
+        to: "pawan.gilhotra@gmail.com",
+        subject: `New Form Entry ${Emailcount > 0 ? `#${Emailcount}` : ''} for ${data?.event}`,
         html: emailContent,
     };
 

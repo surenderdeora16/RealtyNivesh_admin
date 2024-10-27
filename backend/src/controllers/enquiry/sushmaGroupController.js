@@ -1,7 +1,14 @@
 const { SushmaGroupEnquiry } = require('../../models');
 const sendEmail = require('../../helpers/email');
-const { generateOTP, verifyOTP } = require('../../helpers/sendSms'); // Services updated for better structure
+const { generateOTP, verifyOTP } = require('../../helpers/sendSms');
 const Otp = require('../../models/Otp');
+
+async function getOtpStatusVerifiedAndNotRequiredCount() {
+    const counts = await SushmaGroupEnquiry.countDocuments({
+        otpStatus: { $in: ['otp verified', 'not required'] }
+    });
+    return counts;
+}
 
 exports.SushmaGroupEnquiry = async (req, res) => {
     try {
@@ -9,7 +16,8 @@ exports.SushmaGroupEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'message', 'siteVisitDate', 'projectName']);
         if (action === 'getintouch') {
             const result = await SushmaGroupEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data, 'Sushma Group');
+            const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+            await sendEmail(data, Emailcount, 'Sushma Group');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -42,7 +50,8 @@ exports.SushmaGroupEnquiry = async (req, res) => {
                         new: true
                     }
                 );
-                await sendEmail(data, 'Sushma Group');
+                const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+                await sendEmail(data, Emailcount, 'Sushma Group');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);

@@ -8,7 +8,7 @@ exports.RealtyNiveshEnquiry = async (req, res) => {
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'projectName', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
 
         if (action === 'getintouch') {
-            const result = await sendEmail(data, 'Realty Nivesh');
+            const result = await sendEmail(data, 0, 'Realty Nivesh');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -25,7 +25,7 @@ exports.RealtyNiveshEnquiry = async (req, res) => {
             const { valid, message } = await verifyOTP(mobile, otp);
 
             if (valid) {
-                const enquiry = await sendEmail(data, 'Realty Nivesh');
+                const enquiry = await sendEmail(data, 0, 'Realty Nivesh');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);

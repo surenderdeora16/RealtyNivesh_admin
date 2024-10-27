@@ -3,13 +3,22 @@ const sendEmail = require('../../helpers/email');
 const { generateOTP, verifyOTP } = require('../../helpers/sendSms'); // Services updated for better structure
 const Otp = require('../../models/Otp');
 
+
+async function getOtpStatusVerifiedAndNotRequiredCount() {
+    const counts = await MedallionEnquiry.countDocuments({
+        otpStatus: { $in: ['otp verified', 'not required'] }
+    });
+    return counts; 
+}
+
 exports.MedallionEnquiry = async (req, res) => {
     try {
         const { action, mobile, otp } = req.body;
         let data = req.getBody(['type', 'event', 'name', 'mobile', 'email', 'city', 'message', 'siteVisitDate', 'preferredHomeSize', 'broker', 'howHeardAboutUs']);
         if (action === 'getintouch') {
             const result = await MedallionEnquiry.create({ ...data, otpStatus: 'not required' });
-            await sendEmail(data, 'Medallion');
+            const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+            await sendEmail(data, Emailcount, 'Medallion');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -35,7 +44,8 @@ exports.MedallionEnquiry = async (req, res) => {
                         new: true
                     }
                 );
-                await sendEmail(data, 'Medallion');
+                const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
+                await sendEmail(data, Emailcount, 'Medallion');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);
