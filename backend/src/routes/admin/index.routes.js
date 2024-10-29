@@ -49,6 +49,8 @@ router.get('/users-datatable', usersController.list);
 router.get('/contact-us-datatable', CommonController.contactUsList)
 
 router.get('/sushmaelementa-enquiry-datatable', SushmaElementaController.EnquiryList)
+router.post('/remark', showValidationErrors, SushmaElementaController.CreateRemark)
+
 router.get('/sushmagroup-enquiry-datatable', SushmaGroupController.EnquiryList)
 
 

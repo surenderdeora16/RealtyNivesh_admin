@@ -32,9 +32,9 @@ const getFilePath = (value, path, returnType = true) => {
 const getCookiesConfig = () => {
     return {
         httpOnly: true,
-        secure: false,
+        secure: true,  //For Live True
         //   secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
-        sameSite: 'strict', // 'strict' | 'Lax' | 'None', // Prevent CSRF attacks
+        sameSite: 'None',  // 'strict' | 'Lax' | 'None', // Prevent CSRF attacks
         maxAge: 24 * 60 * 60 * 1000, // 1 day
     }
 }

@@ -16,6 +16,11 @@ const enquirySchema = new mongoose.Schema({
     event: { type: String, required: true },
     otpStatus: { type: String, default: 'OTP Not Verified' },
     googleSheetStatus: { type: Boolean, default: false },
+    remarks: [{
+        remark: { type: String },
+        name: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now }
+    }],
     createdAt: { type: Date, default: Date.now },
 });
 
