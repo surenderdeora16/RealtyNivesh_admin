@@ -1,9 +1,15 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Modal, CloseButton, Tabs, Tab } from 'react-bootstrap';
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Modal, CloseButton, Tabs, Tab, Form, Button, Table, Overlay, Tooltip, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import AxiosHelper from '../../../helper/AxiosHelper';
 import Action from '../../../components/Table/Action';
+import moment from 'moment';
 import { formatDateDDMMYYYY } from '../../../helper/StringHelper';
 import { ENQUERY_FORM_TYPES } from '../../../constant/fromConfig';
 import { DateRange } from 'react-date-range';
@@ -12,11 +18,14 @@ import 'react-date-range/dist/theme/default.css';
 
 const Enquiry = () => {
     const clanderCloseRef = useRef(null);
+    const [showRemarkModal, setShowRemarkModal] = useState(false);
     const [data, setData] = useState({ count: 0, record: [], totalPages: 0, pagination: [] });
     const [showView, setShowView] = useState(false);
     const [activeTab, setActiveTab] = useState('1'); // Default active tab
     const [showDateRangeForDate, setShowDateRangeForDate] = useState(false);
     const [showDateRangeForSiteVisit, setShowDateRangeForSiteVisit] = useState(false);
+    const [enquiryRowId, setEnquiryRowId] = useState(null);
+    const [remarkData, setRemarkData] = useState([])
     const [dateRangeForDate, setDateRangeForDate] = useState([
         {
             startDate: new Date(),
@@ -57,9 +66,11 @@ const Enquiry = () => {
         if (data?.status === true) {
             let { count, totalPages, record, pagination } = data?.data;
             setData({ count, totalPages, record, pagination });
-            console.log('data', data)
+            console.log('record', record)
+            return record;
         } else {
             toast.error(data?.message);
+            return null;
         }
     }, [param]);
 
@@ -102,10 +113,22 @@ const Enquiry = () => {
         setShowView(true);
     };
 
+    const handleCloseRemark = () => setShowRemarkModal(false);
+    // const handleShowRemark = (data) => ;
+
     const dropList = [
         {
             name: "View",
             onClick: viewData
+        },
+        {
+            name: "Remark",
+            onClick: (event) => {
+                var data = JSON.parse(event.target.attributes.getNamedItem('main-data').value);
+                setEnquiryRowId(data._id)
+                setRemarkData(data?.remarks)
+                setShowRemarkModal(true)
+            }
         },
     ];
 
@@ -216,7 +239,7 @@ const Enquiry = () => {
                                             <span className="fas fa-chevron-left" />
                                         </button>
                                         <ul className="pagination mb-0 mx-1">
-                                            {data?.pagination.map((row, i) => {
+                                            {data?.pagination.map((row) => {
                                                 return (
                                                     <li key={row}>
                                                         <button onClick={() => handelPageChange(row)} type="button" className={`page me-1 btn btn-sm ${row === data?.pageNo ? "btn-primary" : "btn-falcon-default"}`}>
@@ -315,6 +338,14 @@ const Enquiry = () => {
                     </ul>
                 </Modal.Body>
             </Modal>
+            <RemarkModal
+                show={showRemarkModal}
+                close={handleCloseRemark}
+                enquiryId={enquiryRowId}
+                remarkData={remarkData}
+                getDataForTable={getDataForTable}
+                setRemarkData={setRemarkData}
+            />
         </div>
     );
 }
@@ -322,7 +353,7 @@ const Enquiry = () => {
 const TableContent = ({ records, handelSort, dropList, viewData, param }) => (
     <div className="tab-content">
         <div id="tableExample2" data-list="">
-            <div className="table-responsive1">
+            <div className="table-responsive2">
                 <table className="table table-bordered table-striped fs--1 mb-0">
                     <thead className="bg-200 text-900">
                         <tr>
@@ -388,5 +419,136 @@ const TableContent = ({ records, handelSort, dropList, viewData, param }) => (
         </div>
     </div>
 );
+
+const RemarkModal = ({ show, close, enquiryId, remarkData, getDataForTable, setRemarkData }) => {
+    const [showTooltipIndex, setShowTooltipIndex] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const tooltipTargets = useRef([]);
+
+    const handleTooltipToggle = (index) => {
+        setShowTooltipIndex(showTooltipIndex === index ? null : index);
+    };
+
+    const handleSubmit = async (values, { resetForm }) => {
+        try {
+            setLoading(true);
+            const response = await AxiosHelper.postData('/admin/remark', { ...values, enquiryId });
+            if (response.data.status) {
+                toast.success('Remark submitted successfully!');
+                const updatedData = await getDataForTable();
+                resetForm();
+                if (updatedData) {
+                    const updatedRemarks = updatedData.find((item) => item._id === enquiryId)?.remarks;
+                    setRemarkData(updatedRemarks);
+                }
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            toast.error('Error submitting remark. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Modal show={show} onHide={close} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>Remark</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Formik
+                    initialValues={{ remark: '' }}
+                    validationSchema={Yup.object({
+                        remark: Yup.string().required('Remark is required')
+                    })}
+                    onSubmit={handleSubmit}
+                >
+                    {({ handleSubmit, handleChange, values, errors, touched }) => (
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3" controlId="remark">
+                                <Form.Label>Remark Message</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    name="remark"
+                                    onChange={handleChange}
+                                    value={values.remark}
+                                    isInvalid={touched.remark && !!errors.remark}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.remark}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                            <Button type="submit" variant="primary">
+                                Save Changes
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+            </Modal.Body>
+            <div style={{ height: '300px', overflow: 'auto' }} className='w-100'>
+                <Table responsive="sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loading ? ( // Show loading state
+                            <tr>
+                                <td colSpan="4" className="text-center">
+                                    <Spinner animation="border" />
+                                </td>
+                            </tr>
+                        ) : remarkData && remarkData.length > 0 ? ( // Check if remarkData has items
+                            remarkData.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.createdAt ? moment(item.createdAt).format("DD / MM / YYYY") : "-"}</td>
+                                    <td>{item.name || "-"}</td>
+                                    <td>
+                                        <div className='w-100'>
+                                            <div
+                                                style={{ cursor: 'pointer', maxWidth: '200px' }}
+                                                ref={el => tooltipTargets.current[index] = el}
+                                                onClick={() => handleTooltipToggle(index)}
+                                                className='truncate-text'
+                                            >
+                                                {item.remark || "-"}
+                                            </div>
+                                            {showTooltipIndex === index && (
+                                                <Overlay
+                                                    target={tooltipTargets.current[index]}
+                                                    show={true}
+                                                    placement="right"
+                                                >
+                                                    {(props) => (
+                                                        <Tooltip id={`tooltip-${index}`} {...props}>
+                                                            {item?.remark || '-'}
+                                                        </Tooltip>
+                                                    )}
+                                                </Overlay>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : ( 
+                            <tr>
+                                <td colSpan="4" className="text-center text-danger">
+                                    No remarks !!
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
+        </Modal>
+    );
+};
 
 export default Enquiry;

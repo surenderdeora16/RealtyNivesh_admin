@@ -7,7 +7,7 @@ import '../assets/css/admin/custom.css'
 
 const AdminAuthLayout = () => {
     var { isLoggedIn } = useSelector(store => store.admin);
-    return isLoggedIn ? <Navigate to={`/admin/dashboard`} /> : <Outlet />;
+    return isLoggedIn ? <Navigate to={`/dashboard`} /> : <Outlet />;
 };
 
 export default AdminAuthLayout;

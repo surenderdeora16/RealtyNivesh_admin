@@ -63,7 +63,7 @@ function Login() {
                                             toast.success("Successfully Login..!!");
                                             console.log(data, "admin");
                                             dispatch(logdedInAdmin(data.data.user))
-                                            // return navigate(`/admin/dashboard`);
+                                            return navigate(`/dashboard`);
                                         } else {
                                             toast.error(data?.message);
                                         }

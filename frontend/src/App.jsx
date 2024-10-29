@@ -1,7 +1,5 @@
-import React from 'react'
 import { RouterProvider } from "react-router-dom";
 import router from './router';
-import Loader from './components/Website/Loader';
 import { store } from './store'
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -9,6 +7,7 @@ import CommonProvider from './layouts/CommonProvider';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'animate.css/animate.min.css'
+import Loader from './components/Admin/Loader';
 
 const App = () => {
     return (

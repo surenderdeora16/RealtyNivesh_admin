@@ -1152,3 +1152,10 @@ input[type="number"].no-number {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+
+.truncate-text {
+  white-space: nowrap !important;      
+  overflow: hidden !important;         
+  text-overflow: ellipsis !important;   
+}

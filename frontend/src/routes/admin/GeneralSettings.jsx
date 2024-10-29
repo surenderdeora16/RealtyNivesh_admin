@@ -68,11 +68,11 @@ const GeneralSettings = () => {
 
                 setValues({ fields, initialValues, validFields })
             } else {
-                navigate('admin/dashboard')
+                navigate('/dashboard')
                 toast.error(data?.message);
             }
         })()
-    }, [type])
+    }, [type, navigate])
 
     return (
         <div className="card">

@@ -10,8 +10,8 @@ export default defineConfig({
     base: "",
     publicDir: "public",
     server: {
-        port: 4000, // To run the app on port 4000
-        open: true // If we want to open the app once its started
+        port: 4000, 
+        open: true 
     },
 })
 

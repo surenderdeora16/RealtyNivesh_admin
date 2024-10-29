@@ -11,7 +11,7 @@ import Loader from "../components/Admin/Loader";
 // Style Sheets 
 import '../assets/css/admin/theme.min.css'
 import '../assets/css/admin/custom.css'
-import { updateAdmin } from "../redux/admin/adminSlice";
+import { logdedOutAdmin, updateAdmin } from "../redux/admin/adminSlice";
 import AxiosHelper from "../helper/AxiosHelper";
 
 const AdminLayout = () => {
@@ -42,10 +42,11 @@ const AdminLayout = () => {
             setIsLoggedIn(true)
             return true;
         } else {
+            dispatch(logdedOutAdmin());
             setIsLoggedIn(false)
             return false;
         }
-    }, [])
+    }, [dispatch])
 
     useEffect(() => { updateDataAdmin() }, [updateDataAdmin])
     if (navigation.state !== "idle" || isLoggedIn === null) return <Loader />
@@ -54,7 +55,7 @@ const AdminLayout = () => {
         <div className="main" id="top">
             <SiteSetting hover={hover} setToggle={setToggle} toggle={toggle} dark={dark} />
             <div className="container-fluid" data-layout="container">
-                <SideBar logoUrl={`/admin/dashboard`} toggle={toggle} menu={menu_data} setToggle={setToggleMiddle} setHover={setHover} />
+                <SideBar logoUrl={`/dashboard`} toggle={toggle} menu={menu_data} setToggle={setToggleMiddle} setHover={setHover} />
                 <div className="content">
                     <Navbar toggle={toggle} setToggle={setToggleMiddle} dark={dark} setDark={setDarkMiddle} />
                     <div className="mt-2"><Outlet /></div>
@@ -63,7 +64,7 @@ const AdminLayout = () => {
             </div>
         </div>
         :
-        <Navigate to={`/admin/login`} state={{ from: location }} replace />
+        <Navigate to={`/login`} state={{ from: location }} replace />
 };
 
 export default AdminLayout;
