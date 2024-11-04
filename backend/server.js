@@ -38,7 +38,6 @@ app.all("/uploads/*", (req, res) => res.sendFile(path.resolve(__dirname, './publ
 app.get("/", async (req, res) => res.json({ status: true, message: "Api Working fine..!!" }));
 app.get('/savedata-to-googlesheet', async (req, res) => {
     try {
-
         await processWebsites();
         res.status(200).json({ message: 'Data processed and sent to Google Sheets successfully.' });
     } catch (error) {

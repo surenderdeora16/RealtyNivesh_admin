@@ -35,7 +35,7 @@ const sendToGoogleSheet = async (model, sheetName) => {
         const enquiries = await model.find({
             googleSheetStatus: { $ne: true },
             createdAt: { $lte: moment().subtract(15, 'minutes').toDate() }
-        });
+        }).sort({ createdAt: -1 });
 
         if (enquiries.length > 0) {
             let values;
@@ -97,7 +97,6 @@ const sendToGoogleSheet = async (model, sheetName) => {
             });
 
             const enquiryIds = enquiries.map(enquiry => enquiry._id);
-            console.log('enquiryIds', enquiryIds)
             await model.updateMany({ _id: { $in: enquiryIds } }, { googleSheetStatus: true });
 
             console.log(`Data sent to ${sheetName} tab and googleSheetStatus updated.`);
