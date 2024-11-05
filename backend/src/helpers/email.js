@@ -1,14 +1,12 @@
-const nodemailer = require("nodemailer");
+const { MailtrapClient } = require("mailtrap")
 
 const sendEmail = async (data, Emailcount, WebsiteName) => {
-    var transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        auth: {
-            user: "surender82905@gmail.com",
-            pass: "oczbbjpmhfknmmnh"
-        }
-    });
+    const client = new MailtrapClient({ token: process.env.MAILTRAP_TOKEN });
+
+    if (!client) {
+        console.error("Mailtrap client initialization failed.");
+        return;
+    }
 
     const emailContent = `
     <!DOCTYPE html>
@@ -95,15 +93,23 @@ const sendEmail = async (data, Emailcount, WebsiteName) => {
     </body>
     </html>
 `;
-    // pawan.gilhotra@gmail.com
-    const mailOptions = {
-        from: 'surender82905@gmail.com',
-        to: "pawan.gilhotra@gmail.com",
-        subject: `New Form Entry ${Emailcount > 0 ? `#${Emailcount}` : ''} for ${data?.event}`,
-        html: emailContent,
-    };
+    
+    (async () => {
+        try {
+            const response = await client.send({
+                from: { name: WebsiteName, email: process.env.MAILTRAP_SENDER_EMAIL },
+                to: [{ name: process.env.MAILTRAP_RECIPIENT_NAME, email: process.env.MAILTRAP_RECIPIENT_EMAIL }],
+                subject: `New Form Entry ${Emailcount > 0 ? `#${Emailcount}` : ''} for ${data?.event}`,
+                html: emailContent
+            });
 
-    await transporter.sendMail(mailOptions);
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+        }
+
+    })()
+
 };
 
 module.exports = sendEmail;

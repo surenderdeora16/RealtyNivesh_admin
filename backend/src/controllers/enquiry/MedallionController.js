@@ -18,7 +18,7 @@ exports.MedallionEnquiry = async (req, res) => {
         if (action === 'getintouch') {
             const result = await MedallionEnquiry.create({ ...data, otpStatus: 'not required' });
             const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
-            await sendEmail(data, Emailcount, 'Medallion');
+            await sendEmail(data, Emailcount, 'The Medallion');
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
@@ -45,7 +45,7 @@ exports.MedallionEnquiry = async (req, res) => {
                     }
                 );
                 const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
-                await sendEmail(data, Emailcount, 'Medallion');
+                await sendEmail(data, Emailcount, 'The Medallion');
                 return res.successUpdate(enquiry);
             } else {
                 return res.badRequest(message);
