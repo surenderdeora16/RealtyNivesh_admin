@@ -5,6 +5,8 @@ const frontController = require('../controllers/frontController');
 const SushmaGroupEnquiry = require('../controllers/enquiry/sushmaGroupController');
 const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaController');
 const MedallionController = require('../controllers/enquiry/medallionController');
+const MedallionAurumController = require('../controllers/enquiry/MedallionAurumController');
+
 const RealtyNiveshController = require('../controllers/enquiry/realtyniveshController');
 const express = require('express')
 const router = express.Router();
@@ -28,6 +30,8 @@ router.post('/realtynivesh-enquiry', showValidationErrors, RealtyNiveshControlle
 router.post('/sushmagroup-enquiry', showValidationErrors, SushmaGroupEnquiry.SushmaGroupEnquiry)
 router.post('/sushmaelementa-enquiry', showValidationErrors, SushmaElementaEnquiry.SushmaElementaEnquiry)
 router.post('/medallion-enquiry', showValidationErrors, MedallionController.MedallionEnquiry)
+router.post('/medallion-aurum-enquiry', showValidationErrors, MedallionAurumController.MedallionAurumEnquiry)
+
 
 
 router.get('/retreat-datatable/:slug?', frontController.retreatList);
