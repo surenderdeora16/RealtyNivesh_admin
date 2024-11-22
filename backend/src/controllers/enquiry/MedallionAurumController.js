@@ -18,17 +18,20 @@ exports.MedallionAurumEnquiry = async (req, res) => {
         if (action === 'getintouch') {
             const result = await MedallionAurumEnquiry.create({ ...data, otpStatus: 'not required' });
             const Emailcount = await getOtpStatusVerifiedAndNotRequiredCount();
-            const emails = await sendEmail(data, Emailcount, 'The Medallion Aurum');
-            console.log('emails', emails)
+            await sendEmail(data, Emailcount, 'The Medallion Aurum');
+
             return res.successInsert(result);
 
         } else if (action === 'submitForm') {
             const result = await MedallionAurumEnquiry.create({ ...data, otpStatus: 'otp not verified' });
             const otpGenerated = await generateOTP(result.mobile);
-            if (otpGenerated) {
+            
+            if (otpGenerated?.success) {
+                console.log(1)
                 return res.successInsert({ result, message: 'OTP sent to mobile' });
             } else {
-                return res.someThingWentWrong('Failed to send OTP');
+                console.log(2)
+                return res.status(422).json({ success: false, message: otpGenerated?.message });
             }
 
         } else if (action === 'verifyOTP') {
@@ -58,6 +61,7 @@ exports.MedallionAurumEnquiry = async (req, res) => {
 
             const otpGenerated = await generateOTP(enquiry.mobile);
 
+            console.log('otpGenerated', otpGenerated)
             if (otpGenerated) {
                 return res.status(200).json({
                     status: true,

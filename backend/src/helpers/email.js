@@ -8,6 +8,11 @@ const sendEmail = async (data, Emailcount, WebsiteName) => {
         return;
     }
 
+
+    if (!process.env.MAILTRAP_SENDER_EMAIL || !process.env.MAILTRAP_RECIPIENT_EMAIL) {
+        throw new Error("Required environment variables for sender or recipient email are missing.");
+    }
+
     const emailContent = `
     <!DOCTYPE html>
     <html lang="en">
@@ -102,8 +107,6 @@ const sendEmail = async (data, Emailcount, WebsiteName) => {
                 subject: `New Form Entry ${Emailcount > 0 ? `#${Emailcount}` : ''} for ${data?.event}`,
                 html: emailContent
             });
-
-            console.log(response)
         } catch (error) {
             console.error(error)
         }
