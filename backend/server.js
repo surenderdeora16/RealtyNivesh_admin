@@ -17,7 +17,8 @@ app.use(cors({
         "https://admin.realtynivesh.com",
         "https://realtynivesh.com",
         "https://sushmagroup.realtynivesh.com",
-        "https://themedallion.realtynivesh.com"
+        "https://themedallion.realtynivesh.com",
+        "https://sushmagroup.realtynivesh.com/sushmabelleza"
     ],
     credentials: true
 }));

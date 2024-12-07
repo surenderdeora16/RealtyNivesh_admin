@@ -6,6 +6,8 @@ const SushmaGroupEnquiry = require('../controllers/enquiry/sushmaGroupController
 const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaController');
 const MedallionController = require('../controllers/enquiry/medallionController');
 const MedallionAurumController = require('../controllers/enquiry/MedallionAurumController');
+const sushmaBellezaController = require('../controllers/enquiry/sushmaBellezaController');
+
 
 const RealtyNiveshController = require('../controllers/enquiry/realtyniveshController');
 const express = require('express')
@@ -31,6 +33,8 @@ router.post('/sushmagroup-enquiry', showValidationErrors, SushmaGroupEnquiry.Sus
 router.post('/sushmaelementa-enquiry', showValidationErrors, SushmaElementaEnquiry.SushmaElementaEnquiry)
 router.post('/medallion-enquiry', showValidationErrors, MedallionController.MedallionEnquiry)
 router.post('/medallion-aurum-enquiry', showValidationErrors, MedallionAurumController.MedallionAurumEnquiry)
+router.post('/sushmabelleza-enquiry', showValidationErrors, sushmaBellezaController.SushmaBellezaEnquiry)
+
 
 
 

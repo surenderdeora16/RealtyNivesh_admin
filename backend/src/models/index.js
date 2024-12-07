@@ -31,7 +31,9 @@ const SushmaElementaEnquiry = require('./SushmaElementaEnquiry')
 const SushmaGroupEnquiry = require('./SushmaGroupEnquiry')
 const MedallionEnquiry = require('./MedallionEnquiry')
 const MedallionAurumEnquiry = require('./MedallionAurumEnquiry')
+const SushmaBellezaEnquiry = require('./SushmaBellezaEnquiry')
 
 
 
-module.exports = {MedallionAurumEnquiry, MedallionEnquiry, SushmaGroupEnquiry, SushmaElementaEnquiry, User, Admin, UserOTP, GeneralSetting, ContactUs, DiscountCoupon, Retreat, Booking, OnlineProgramPrice, mongoose, connection, createFromHexString, db };
+
+module.exports = {SushmaBellezaEnquiry, MedallionAurumEnquiry, MedallionEnquiry, SushmaGroupEnquiry, SushmaElementaEnquiry, User, Admin, UserOTP, GeneralSetting, ContactUs, DiscountCoupon, Retreat, Booking, OnlineProgramPrice, mongoose, connection, createFromHexString, db };

@@ -60,7 +60,7 @@ const sendToGoogleSheet = async (model, sheetName) => {
                         enquiry.event || '-'
                     ];
                 });
-            } else if (model.modelName === 'SushmaElementa_Enquiry' || 'Medallion_Enquiry') {
+            } else if (model.modelName === 'SushmaElementa_Enquiry' || 'SushmaBelleza_Enquiry' || 'Medallion_Enquiry') {
                 values = enquiries.map(enquiry => {
                     const formattedDate = enquiry.createdAt
                         ? `${enquiry.createdAt.getDate()}/${enquiry.createdAt.getMonth() + 1}/${enquiry.createdAt.getFullYear()}`
