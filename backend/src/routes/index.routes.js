@@ -7,6 +7,7 @@ const SushmaElementaEnquiry = require('../controllers/enquiry/sushmaElementaCont
 const MedallionController = require('../controllers/enquiry/medallionController');
 const MedallionAurumController = require('../controllers/enquiry/MedallionAurumController');
 const sushmaBellezaController = require('../controllers/enquiry/sushmaBellezaController');
+const PinnacleController = require('../controllers/enquiry/PinnacleController');
 
 
 const RealtyNiveshController = require('../controllers/enquiry/realtyniveshController');
@@ -34,8 +35,7 @@ router.post('/sushmaelementa-enquiry', showValidationErrors, SushmaElementaEnqui
 router.post('/medallion-enquiry', showValidationErrors, MedallionController.MedallionEnquiry)
 router.post('/medallion-aurum-enquiry', showValidationErrors, MedallionAurumController.MedallionAurumEnquiry)
 router.post('/sushmabelleza-enquiry', showValidationErrors, sushmaBellezaController.SushmaBellezaEnquiry)
-
-
+router.post('/pinnacle-enquiry', showValidationErrors, PinnacleController.PinnacleEnquiry)
 
 
 router.get('/retreat-datatable/:slug?', frontController.retreatList);
